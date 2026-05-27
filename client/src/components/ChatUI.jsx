@@ -45,42 +45,49 @@ export default function ChatUI({ user, getToken, onLogout }) {
   };
 
   return (
-    <div className="chat-shell">
-      <header>
-        <div>
+    <div className="chat-app">
+      <aside className="sidebar">
+        <div className="brand">GeNNio</div>
+        <button className="sidebar-btn">+ New chat</button>
+        <div className="sidebar-meta">{user.email}</div>
+      </aside>
+
+      <div className="chat-shell">
+        <header className="chat-header">
           <h2>GeNNio Chat</h2>
-          <span>Signed in as {user.email}</span>
-        </div>
-        <button className="ghost" onClick={onLogout}>Log out</button>
-      </header>
+          <button className="ghost" onClick={onLogout}>Log out</button>
+        </header>
 
-      <main>
-        {messages.map((msg, idx) => (
-          <article key={`${msg.role}-${idx}`} className={`bubble ${msg.role}`}>
-            <strong>{msg.role === 'assistant' ? 'AI' : 'You'}</strong>
-            <p>{msg.content}</p>
-          </article>
-        ))}
-      </main>
-
-      <form className="composer" onSubmit={sendMessage}>
-        <input ref={fileRef} type="file" accept="image/*" multiple onChange={onFileChange} hidden />
-        <button type="button" className="ghost" onClick={() => fileRef.current?.click()}>Attach</button>
-        <input
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          placeholder="Message GeNNio..."
-          maxLength={4000}
-        />
-        <button type="submit" disabled={loading}>{loading ? 'Sending...' : 'Send'}</button>
-      </form>
-      {files.length > 0 && (
-        <div className="file-strip">
-          {files.map((file) => (
-            <span key={file.name}>{file.name}</span>
+        <main className="chat-main">
+          {messages.map((msg, idx) => (
+            <article key={`${msg.role}-${idx}`} className={`bubble ${msg.role}`}>
+              <strong>{msg.role === 'assistant' ? 'GeNNio' : 'You'}</strong>
+              <p>{msg.content}</p>
+            </article>
           ))}
-        </div>
-      )}
+        </main>
+
+        {files.length > 0 && (
+          <div className="file-strip">
+            {files.map((file) => (
+              <span key={file.name}>{file.name}</span>
+            ))}
+          </div>
+        )}
+
+        <form className="composer" onSubmit={sendMessage}>
+          <input ref={fileRef} type="file" accept="image/*" multiple onChange={onFileChange} hidden />
+          <button type="button" className="ghost composer-attach" onClick={() => fileRef.current?.click()}>+</button>
+          <input
+            className="composer-input"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            placeholder="Ask anything"
+            maxLength={4000}
+          />
+          <button className="composer-send" type="submit" disabled={loading}>{loading ? '...' : 'Send'}</button>
+        </form>
+      </div>
     </div>
   );
 }

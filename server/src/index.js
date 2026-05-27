@@ -10,11 +10,11 @@ import { z } from 'zod';
 import OpenAI from 'openai';
 import { auth, db } from './firebase-admin.js';
 
-dotenv.config();
-
-const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+const app = express();
 const publicDir = path.join(__dirname, '../public');
 
 const apiLimiter = rateLimit({
