@@ -1,14 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-
-      match /chats/{chatId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-    }
-
+    // Firestore is accessed only by the authenticated server through Firebase Admin.
+    // Admin SDK requests bypass these rules; browser access is denied by default.
     match /{document=**} {
       allow read, write: if false;
     }
